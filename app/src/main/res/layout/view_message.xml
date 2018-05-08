@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<www.zhihusan.agentscan.utils.tosat.Toast xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/message_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#7d000000"
+    android:elevation="5dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/message_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:minHeight="45dp"
+        android:padding="5dp"
+        android:textColor="@android:color/white" />
+</www.zhihusan.agentscan.utils.tosat.Toast>
