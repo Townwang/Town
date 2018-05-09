@@ -23,19 +23,17 @@ import java.util.concurrent.TimeUnit
  */
  open class BaseApiImpl(baseUrl: String):BaseApi{
     companion object {
-
         @Volatile
         private var retrofit: Retrofit? = null
     }
 
     override fun getRetrofit(): Retrofit? {
-        if (retrofit == null){
-            //锁定代码块
-            synchronized(BaseApiImpl::class.java) {
-                if (retrofit == null) {
-                    retrofit = retrofitBuilder.build() //创建retrofit对象
+        when (retrofit) {
+            null -> //锁定代码块
+                synchronized(BaseApiImpl::class.java) {
+                    if (retrofit == null) retrofit = retrofitBuilder.build()
+                    //创建retrofit对象
                 }
-            }
         }
        return retrofit
     }

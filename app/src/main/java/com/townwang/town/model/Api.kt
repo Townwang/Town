@@ -12,8 +12,8 @@ import com.townwang.town.retroft.BaseApiImpl
 class Api(baseUrl: String) : BaseApiImpl(baseUrl) {
     companion object {
         private val api = Api(RetrofitService.BASE_URL)
-         fun getInstance(): RetrofitService? {
-            return api.getRetrofit()?.create(RetrofitService::class.java)
+         fun getInstance(): RetrofitService {
+            return api.getRetrofit()?.create(RetrofitService::class.java)!!
         }
     }
 }

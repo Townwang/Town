@@ -91,7 +91,7 @@ object Log {
      * @param response  必传
      * @param TagName 输出台标签名：必传。
      */
-    fun outputFormatJson(TagName: String, response: Any?) {
+    private fun outputFormatJson(TagName: String, response: Any?) {
         synchronized(Log::class.java) {
             try {
                 currentTime = System.currentTimeMillis()
@@ -163,30 +163,34 @@ object Log {
 
                 val key = jsonobject.next()
 
-                if (response.get(key) is JSONObject) {
+                when {
+                    response.get(key) is JSONObject -> {
 
-                    appendSb("\"" + key + "\"" + ":{", false)
+                        appendSb("$key:{", false)
 
-                    prinfrmatJson(TagName, response.get(key) as JSONObject)
+                        prinfrmatJson(TagName, response.get(key) as JSONObject)
 
-                    val isendValue = jsonobject.hasNext()//判断是否还有下一个元素
+                        val isendValue = jsonobject.hasNext()//判断是否还有下一个元素
 
-                    appendSb("  }", isendValue)
+                        appendSb("  }", isendValue)
 
-                } else if (response.get(key) is JSONArray) {
+                    }
+                    response.get(key) is JSONArray -> {
 
-                    appendSb("\"" + key + "\"" + ":[", false)
+                        appendSb("$key:[", false)
 
-                    itemrArray(TagName, response.get(key) as JSONArray)
+                        itemrArray(TagName, response.get(key) as JSONArray)
 
-                    val isendValue = jsonobject.hasNext()//判断是否还有下一个元素
+                        val isendValue = jsonobject.hasNext()//判断是否还有下一个元素
 
-                    appendSb(" " + " ]", isendValue)
+                        appendSb("  ]", isendValue)
 
-                } else if (response.get(key) is Any) {
+                    }
+                    response.get(key) is Any -> {
 
-                    val isendValue = jsonobject.hasNext()//判断是否还有下一个元素
-                    getTypeData(response, key, !isendValue)
+                        val isendValue = jsonobject.hasNext()//判断是否还有下一个元素
+                        getTypeData(response, key, !isendValue)
+                    }
                 }
             }
         } catch (e: JSONException) {
@@ -203,49 +207,49 @@ object Log {
         try {
             if (response.get(key) is Int) {
                 val value = response.get(key) as Int
-                appendSb("\t" + "\"" + key + "\"" + ":" + value + "", !isEndValue)
+                appendSb("\t$key:$value", !isEndValue)
 
             } else if (response.get(key) is String || null == response.get(key) || TextUtils.equals("null", response.get(key).toString())) {
 
                 if (response.get(key) is String) {
 
                     val value = response.get(key) as String
-                    appendSb("\t" + "\"" + key + "\"" + ":" + "\"" + value + "\"", !isEndValue)
+                    appendSb("\t$key:$value", !isEndValue)
                 } else if (TextUtils.equals("null", response.get(key).toString())) {
-                    appendSb("\t" + "\"" + key + "\"" + ":" + null, !isEndValue)
+                    appendSb("\t$key:null", !isEndValue)
 
                 } else {
                     val value = response.get(key) as String
-                    appendSb("\t" + "\"" + key + "\"" + ":" + "\"" + value + "\"", !isEndValue)
+                    appendSb("\t$key:$value", !isEndValue)
                 }
             } else if (response.get(key) is Float) {
                 val value = response.get(key) as Float
 
-                appendSb("\t" + "\"" + key + "\"" + ":" + "\"" + value + "\"", !isEndValue)
+                appendSb("\t$key:$value", !isEndValue)
 
             } else if (response.get(key) is Double) {
 
                 val value = response.get(key) as Double
 
-                appendSb("\t" + "\"" + key + "\"" + ":" + "\"" + value + "\"", !isEndValue)
+                appendSb("\t$key:$value", !isEndValue)
 
             } else if (response.get(key) is Boolean) {
 
                 val value = response.get(key) as Boolean
 
-                appendSb("\t" + "\"" + key + "\"" + ":" + "\"" + value + "\"", !isEndValue)
+                appendSb("\t$key:$value", !isEndValue)
 
             } else if (response.get(key) is Char) {
 
                 val value = response.get(key) as Char
 
-                appendSb("\t" + "\"" + key + "\"" + ":" + "\"" + value + "\"", !isEndValue)
+                appendSb("\t$key:$value", !isEndValue)
 
             } else if (response.get(key) is Long) {
 
                 val value = response.get(key) as Long
 
-                appendSb("\t" + "\"" + key + "\"" + ":" + "\"" + value + "\"", !isEndValue)
+                appendSb("\t$key:$value", !isEndValue)
             }
         } catch (e: JSONException) {
             e.printStackTrace()
@@ -300,7 +304,7 @@ object Log {
      * @parac max:通过测试不建议修改数据值，修改成4000,会丢失数据。
      */
     private fun logOut(tag: String, content: String) {
-        @Suppress("NAME_SHADOWING")
+
         var content = content
         val max = 3900
         val length = content.length.toLong()

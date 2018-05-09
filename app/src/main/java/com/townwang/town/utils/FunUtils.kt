@@ -30,7 +30,7 @@ object  FunUtils {
      */
     val isFastDoubleClick: Boolean get() {
             val time = System.currentTimeMillis()
-            if (time - lastClickTime in 1..499) {
+            if ((time - lastClickTime) in 1..499) {
                 return true
             }
             lastClickTime = time
@@ -47,7 +47,7 @@ object  FunUtils {
                 var line: String? = null
                 var input: BufferedReader? = null
                 try {
-                    val p = Runtime.getRuntime().exec("getprop " + propName)
+                    val p = Runtime.getRuntime().exec("getprop $propName")
                     input = BufferedReader(InputStreamReader(p.inputStream), 1024)
                     line = input.readLine()
                     input.close()
