@@ -1,5 +1,6 @@
 package com.townwang.town.base.baseImpl
 import android.app.Application
+import com.townwang.town.daemon.LiveService
 
 /**
  * @author Town
@@ -22,5 +23,6 @@ class BaseApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         app = this
+        LiveService.toLiveService(this)
     }
 }
